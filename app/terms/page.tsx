@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { CONTACT_EMAIL, LAST_UPDATED } from "@/lib/site";
+import { CONTACT_EMAIL, LAST_UPDATED, canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
     "Terms of Service for Prynce Home Assistant, a private Google Nest integration for Home Assistant.",
   alternates: {
-    canonical: "/terms",
+    canonical: canonicalUrl("/terms"),
   },
 };
 

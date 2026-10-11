@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { CONTACT_EMAIL } from "@/lib/site";
+import { CONTACT_EMAIL, canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Contact information for Prynce Home Assistant.",
   alternates: {
-    canonical: "/contact",
+    canonical: canonicalUrl("/contact"),
   },
 };
 

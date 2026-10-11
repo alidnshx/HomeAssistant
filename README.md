@@ -32,27 +32,52 @@ Open http://localhost:3000.
 
 ## Build
 
+The site builds as a static export (`output: "export"` in
+[next.config.ts](/Users/alidaneshvar/Desktop/Claude/HomeAssistant/next.config.ts)), so `next start` does not apply.
+
 ```bash
-npm run build
-npm run start
+npm run build   # writes static HTML/CSS/JS to ./out
+npm run serve   # preview the exported ./out folder locally
 ```
 
-## Deployment (Vercel)
+To build locally with the same base path GitHub Pages uses in production:
 
-1. Push this repository to GitHub (or another Git provider).
-2. Import the project in Vercel — no special configuration is required.
-3. (Optional) Set the environment variable `NEXT_PUBLIC_SITE_URL` to your
-   final production domain (e.g. `https://your-domain.com`) to make canonical
-   URLs in page metadata fully explicit. If omitted, Vercel's own
-   `VERCEL_URL` build variable is used automatically.
+```bash
+NEXT_PUBLIC_BASE_PATH=/HomeAssistant \
+NEXT_PUBLIC_SITE_URL=https://alidnshx.github.io/HomeAssistant \
+npm run build
+```
 
-No domain is hard-coded anywhere in the source.
+## Deployment (GitHub Pages)
+
+This repository deploys automatically via
+[.github/workflows/deploy.yml](/Users/alidaneshvar/Desktop/Claude/HomeAssistant/.github/workflows/deploy.yml) on every push to `main`:
+
+1. **Enable Pages once** (manual, one-time step): in the repository on GitHub,
+   go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. Push to `main` — the workflow builds the site with `NEXT_PUBLIC_BASE_PATH`
+   and `NEXT_PUBLIC_SITE_URL` derived automatically from the repository name
+   and owner, then publishes the `out/` folder via
+   `actions/upload-pages-artifact` + `actions/deploy-pages`.
+3. The site becomes available at:
+   `https://<owner>.github.io/<repo-name>/` — for this repository, that is
+   `https://alidnshx.github.io/HomeAssistant/`.
+
+No domain is hard-coded anywhere in the source — `basePath`, `assetPrefix`,
+and `SITE_URL` are all derived from environment variables set by the
+workflow at build time (see
+[lib/site.ts](/Users/alidaneshvar/Desktop/Claude/HomeAssistant/lib/site.ts) and
+[next.config.ts](/Users/alidaneshvar/Desktop/Claude/HomeAssistant/next.config.ts)). If you later connect a
+custom domain via GitHub Pages, just set `NEXT_PUBLIC_SITE_URL` to that domain
+(and `NEXT_PUBLIC_BASE_PATH` to an empty string) in the workflow.
+
+A `public/.nojekyll` file disables GitHub Pages' default Jekyll processing so
+that the `_next/` asset folder is served correctly.
 
 ## Google Auth Platform configuration
 
-Once deployed, use your production domain (replace `your-domain.com` with the
-actual domain connected in Vercel) for the OAuth consent screen branding:
+Once deployed, use the following URLs for the OAuth consent screen branding:
 
-- **App homepage**: `https://your-domain.com`
-- **Privacy policy link**: `https://your-domain.com/privacy`
-- **Terms of service link**: `https://your-domain.com/terms`
+- **App homepage**: `https://alidnshx.github.io/HomeAssistant/`
+- **Privacy policy link**: `https://alidnshx.github.io/HomeAssistant/privacy`
+- **Terms of service link**: `https://alidnshx.github.io/HomeAssistant/terms`

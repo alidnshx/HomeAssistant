@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CONTACT_EMAIL, SITE_DESCRIPTION } from "@/lib/site";
+import { CONTACT_EMAIL, SITE_DESCRIPTION, canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Home",
   description: SITE_DESCRIPTION,
   alternates: {
-    canonical: "/",
+    canonical: canonicalUrl("/"),
   },
 };
 
